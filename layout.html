@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Skranji" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <title>Demo</title>
+</head>
+
+<body>
+    <div class="nav-header">
+        <header>
+            <div class="nav">
+                <div class="logo">Logo</div>
+                <div class="link">
+                    <ul>
+                        <li><a href="https://github.com/kkflyapple">Github</a></li>
+                        <li><a href="#">Register</a></li>
+                        <li><a href="#">Login</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+    </div>  
+    <div class="container">
+        <div class="banner">
+            <div class="wrap" style="left:-600px;">
+                <div class="item active"><img src="./img/4.png" alt="4"></div>
+                <div class="item"><img src="./img/1.png" alt="1"></div>
+                <div class="item"><img src="./img/2.png" alt="2"></div>
+                <div class="item"><img src="./img/3.png" alt="3"></div>
+                <div class="item"><img src="./img/4.png" alt="4"></div>
+                <div class="item"><img src="./img/1.png" alt="1"></div>
+            </div>
+            <div class="buttons">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+            </div>
+            <a href="javascript:;" class="arrow arrow_left">&lt;</a>
+            <a href="javascript:;" class="arrow arrow_right">&gt;</a>
+        </div>
+    </div>
+    <div class="navigator">
+        <div>
+            <a href="#">HOME</a>
+            <a href="#">PROFILE</a>
+            <a href="#">ABOUT</a>
+        </div>
+        <hr style="background-color: lightblue;">
+    </div>
+    <div class="main">
+        <div class="row">
+            <div class="col-1">box1</div>
+            <div class="col-1">box2</div>
+            <div class="col-1">box3</div>
+        </div>
+        <div class="row1">
+            <div class="col-2">box4</div>
+            <div class="col-2">box5</div>
+            <div class="col-2">box6</div>
+            <div class="col-2">box7</div>
+        </div>
+        <div class="row">
+            <div class="col-1">box8</div>
+            <div class="col-1">box9</div>
+            <div class="col-1">box10</div>
+        </div>
+    </div>
+    <div class="footer">&copy; &nbsp;2018&nbsp; ife.baidu.com</div>
+    <script>
+            var wrap = document.querySelector(".wrap");
+            var next = document.querySelector(".arrow_right");
+            var prev = document.querySelector(".arrow_left");
+            
+            next.onclick = function () {
+                next_pic();
+            }
+
+            prev.onclick = function () {
+                prev_pic();
+            }
+
+            function next_pic () {
+                index++;
+                if(index > 3){
+                    index = 0;
+                }
+                showCurrentDot();
+                var newLeft;
+                if(wrap.style.left === "-3000px"){
+                    newLeft = -1200;
+                }else{
+                    newLeft = parseInt(wrap.style.left)-600;
+                }
+                wrap.style.left = newLeft + "px";
+            }
+
+            function prev_pic () {
+                index--;
+                if(index < 0){
+                    index = 3;
+                }
+                showCurrentDot();
+                var newLeft;
+                if(wrap.style.left === "0px"){
+                    newLeft = -2400;
+                }else{
+                    newLeft = parseInt(wrap.style.left)+600;
+                }
+                wrap.style.left = newLeft + "px";
+            }
+
+            var timer = null;
+            function autoPlay () {
+                timer = setInterval(function () {
+                    next_pic();
+                },2000);
+            }
+            autoPlay();
+    
+            var container = document.querySelector(".container");
+            container.onmouseenter = function () {
+                clearInterval(timer);
+            }
+            container.onmouseleave = function () {
+                autoPlay();    
+            }
+    
+            var index = 0;
+            var dots = document.getElementsByTagName("span");
+            function showCurrentDot () {
+                for(var i = 0, len = dots.length; i < len; i++){
+                    dots[i].className = "";
+                }
+                dots[index].className = "on";
+            }
+    
+            for (var i = 0, len = dots.length; i < len; i++){
+                (function(i){
+                    dots[i].onclick = function () {
+                        var dis = index - i;
+                        if(index == 3 && parseInt(wrap.style.left)!==-2400){
+                            dis = dis - 4;     
+                        }
+                        //和使用prev和next相同，在最开始的照片4和最终的照片1在使用时会出现问题，导致符号和位数的出错，做相应地处理即可
+                        if(index == 0 && parseInt(wrap.style.left)!== -600){
+                            dis = 4 + dis;
+                        }
+                        wrap.style.left = (parseInt(wrap.style.left) +  dis * 600)+"px";
+                        index = i;
+                        showCurrentDot();
+                    }
+                })(i);            
+            }
+        </script>
+</body>
+
+</html>
